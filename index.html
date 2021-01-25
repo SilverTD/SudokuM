@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <p id="version">v0.2</p>
+    <div class="container" style="display: none">
+        <button onclick="$('#chatWindow').fadeIn()" id="chatBtn">Chat (0) </button>
+        <div id="user1Side">
+            <h1>You</h1>
+            <h2 id="yourPoints">0 points</h2>
+        </div>
+        <div id="user2Side">
+            <h1>Opponent</h1>
+            <h2 id="opponentPoints">0 points</h2>
+        </div>
+        <div id="chatWindow">
+            <button id="closeChat" onclick="$('#chatWindow').fadeOut()">X</button>
+            <ul id="messages"></ul>
+            <input id="inputChat" type="text" maxlength="300" class="form-control input-sm chat_input" placeholder="Write your message here...">
+        </div>
+    </div>
+    <!-- <div id="controls">
+        <button type="button" class="btn primary" data-action="newGame">New Game</button>
+        <button type="button" class="btn primary" data-action="solve">Solve</button>
+        <button type="button" class="btn primary" data-action="validate">Validate</button>
+    </div> -->
+
+    <div id="menu" style="display:none">
+        <div id="createLobby">
+            <h1>Create Game</h1>
+            <input type="text" placeholder="Name..." id="hostGame">
+            <h2 id="code"></h2>
+        </div>
+        <div id="joinLobby">
+            <h1>Join Game</h1>
+            <input type="text" placeholder="Name..." id="username_input">
+            <input type="text" placeholder="Code..." id="joinGame">
+        </div>
+    </div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.27.4.min.js"></script>
+
+<script src="js/HTMLbuilder.js" charset="utf-8"></script>
+<script src="js/server.js" charset="utf-8"></script>
+<script src="js/game.js" charset="utf-8"></script>
+<script src="js/host.js" charset="utf-8"></script>
+<script src="js/joinChannel.js" charset="utf-8"></script>
+<script src="js/chat.js" charset="utf-8"></script>
+
+<script type="text/javascript">
+     $(document).ready(function(){
+         $('#menu').fadeIn();
+     })
+</script>
+
+</body>
+</html>
