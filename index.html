@@ -2,10 +2,15 @@
 <html lang="en" dir="ltr">
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" type="image/x-icon" href="logo.png" />
+    <title>Sudoku Multiplayer</title>
 </head>
 <body>
-    <p id="version">v0.3</p>
+    <img id="logo" src="logo.png" height="200" style="position: absolute; top: 0; display: none">
+    <p id="version">v0.4</p>
     <div class="container" style="display: none">
         <button onclick="$('#chatWindow').fadeIn()" id="chatBtn">Chat (0) </button>
         <div id="user1Side">
@@ -38,7 +43,11 @@
             <input type="text" placeholder="Name..." id="username_input">
             <input type="text" placeholder="Code..." id="joinGame">
         </div>
-        <button onclick="startGame()">Play Single</buton>
+        <button onclick="startGame()">Play Single</button>
+        <ul id="contact">
+            <a href="https://github.com/silverbossTD/"><i class="fa fa-github" style="font-size: 40px;color: white;margin: 10px"></i></a>
+            <a href="https://www.facebook.com/silver.boss.3781"><i class="fa fa-facebook" style="font-size: 40px;color: white;margin: 10px"></i></a>
+        </ul>
     </div>
 
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -54,6 +63,7 @@
 <script type="text/javascript">
      $(document).ready(function(){
          $('#menu').fadeIn();
+         $('#logo').fadeIn();
      })
 </script>
 

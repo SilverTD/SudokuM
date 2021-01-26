@@ -1,4 +1,4 @@
-var life = 5;
+var life = 3;
 var yourPoints = 0;
 var opponentPoints = 0;
 
@@ -305,7 +305,15 @@ var opponentPoints = 0;
 
             if (num != this.valuesMatrix[rowID][colID]) {
                 isValid = false;
-                life--;
+                if (!IS_ONLINE) {
+                    life--;
+                    if (life < 0) {
+                        alert('YOU LOST, You were wrong 3 times');
+                        $('#menu').css('display', 'block');
+                        $('#singleMatch').css('display', 'none');
+                        $('#singleMatch').empty();
+                    }
+                }
             }
             return isValid;
 		},
