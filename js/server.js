@@ -85,15 +85,15 @@ pubnub.addListener({
                 game.game.winLose();
             }
         }
-        else if (event.message.type == 'chat') {
+        if (event.message.type == 'chat') {
             ChatGame.handleChat(event.message.name, event.message.content);
             if (event.message.sender != uuid) {
                 msgCount++;
-                if ($('#chatWindow').css('display') == 'block') {
-                    msgCount = 0;
-                }
-                $('#chatBtn').html('Chat (' + msgCount + ')');
             }
+            if ($('#chatWindow').css('display') == 'block') {
+                msgCount = 0;
+            }
+            $('#chatBtn').html('Chat (' + msgCount + ')');
         }
     }
 });
@@ -101,13 +101,15 @@ pubnub.addListener({
 
 function send(channel, type, content)
 {
-    pubnub.publish({
-        channel: channel,
-        message: { "sender": uuid, "type": type, "content": content, "name": $('#username_input').val() }
-    }, function (status, response) {
-        //Handle error here
-        if (status.error) {
-            console.log("oops, we got an error")
-        }
-    });
+    if (IS_ONLINE) {
+        pubnub.publish({
+            channel: channel,
+            message: { "sender": uuid, "type": type, "content": content, "name": $('#username_input').val() }
+        }, function (status, response) {
+            //Handle error here
+            if (status.error) {
+                console.log("oops, we got an error")
+            }
+        });
+    }
 };

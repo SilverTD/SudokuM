@@ -16,6 +16,7 @@ var code = generateKey(4)
 $('#code').html(code);
 $('#hostGame')[0].addEventListener('keyup', (e) => {
     if (e.keyCode === 13) {
+        IS_ONLINE = true;
         channel = code;
         mySide = 0;
         console.log('Waiting on player...', [channel]);

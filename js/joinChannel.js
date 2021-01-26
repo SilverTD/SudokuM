@@ -1,5 +1,6 @@
 $('#joinGame')[0].addEventListener('keyup', (e) => {
     if(e.keyCode === 13 && $('#joinGame').val() !== "" && $('#username_input').val() !== "") {
+        IS_ONLINE = true;
         channel = $('#joinGame').val().toUpperCase();
             pubnub.hereNow({
                 channels: [channel],

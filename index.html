@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <p id="version">v0.2</p>
+    <p id="version">v0.3</p>
     <div class="container" style="display: none">
         <button onclick="$('#chatWindow').fadeIn()" id="chatBtn">Chat (0) </button>
         <div id="user1Side">
@@ -22,11 +22,10 @@
             <input id="inputChat" type="text" maxlength="300" class="form-control input-sm chat_input" placeholder="Write your message here...">
         </div>
     </div>
-    <!-- <div id="controls">
-        <button type="button" class="btn primary" data-action="newGame">New Game</button>
-        <button type="button" class="btn primary" data-action="solve">Solve</button>
-        <button type="button" class="btn primary" data-action="validate">Validate</button>
-    </div> -->
+
+    <div id="singleMatch" style="display: none">
+        <!-- <button onclick="back()">Quit</button> -->
+    </div>
 
     <div id="menu" style="display:none">
         <div id="createLobby">
@@ -39,6 +38,7 @@
             <input type="text" placeholder="Name..." id="username_input">
             <input type="text" placeholder="Code..." id="joinGame">
         </div>
+        <button onclick="startGame()">Play Single</buton>
     </div>
 
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>

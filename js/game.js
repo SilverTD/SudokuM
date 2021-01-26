@@ -706,3 +706,25 @@ function startGame2(mySide, channel) {
         controls();
     }, 5000);
 }
+
+function startGame() {
+    IS_ONLINE = false;
+    $('#menu').css('display', 'none');
+    $('#singleMatch').fadeIn();
+
+    const builder = new HTMLBuilder();
+    builder.add('<button id="quitButton">Quit</button>')
+           .addHook(() => $('#quitButton').click(() => {
+               $('#singleMatch').css('display', 'none');
+               $('#menu').fadeIn();
+               $('#singleMatch').empty();
+           }));
+
+    builder.appendInto('#singleMatch');
+
+    game = new Sudoku("#singleMatch");
+    game.start();
+    setTimeout(() => {
+        controls();
+    }, 5000);
+}
