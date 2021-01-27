@@ -719,10 +719,7 @@ function startGame2(mySide, channel) {
     }
     setTimeout(() => {
         controls();
-<<<<<<< HEAD
-=======
 	ready = true;
->>>>>>> 8567ec0680ad446f61d74a4ea57a8beefc42c94f
     }, 8000);
 }
 
