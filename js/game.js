@@ -625,9 +625,9 @@ var opponentPoints = 0;
 				rows = matrix,
 				inputs = this.game.table.getElementsByTagName("input"),
 				difficulties = {
-					"easy": 50,
-					"normal": 40,
-					"hard": 30,
+					"easy": 40,
+					"normal": 30,
+					"hard": 20,
 				};
 
 			// Solve the game to get the solution
