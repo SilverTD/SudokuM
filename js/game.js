@@ -321,6 +321,7 @@ var opponentPoints = 0;
                         $('#menu').css('display', 'block');
                         $('#singleMatch').css('display', 'none');
                         $('#singleMatch').empty();
+			life = 3;
                     }
                 }
             }
