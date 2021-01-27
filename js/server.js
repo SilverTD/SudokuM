@@ -71,6 +71,7 @@ pubnub.addListener({
 
             if (game && event.message.sender == uuid) {
                 let isValid = game.game.validateNumber(val, row, col);
+
                 if (!isValid == false && ready) {
                     yourPoints++;
                 } else if (!isValid == true && ready) {
@@ -82,6 +83,15 @@ pubnub.addListener({
             Check win or lose
             */
             if (game) {
+                let isValid = game.game.validateNumber(val, row, col);
+
+                if (ready && !isValid == false) {
+                    if (mySide == 0 && event.message.sender != uuid) {
+                        game.game.cellMatrix[row][col].classList.add("player1");
+                    } else if (mySide == 1 && event.message.sender != uuid) {
+                        game.game.cellMatrix[row][col].classList.add("player2");
+                    }
+                }
                 game.game.winLose();
             }
         }

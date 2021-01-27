@@ -54,7 +54,20 @@ tr:nth-child(6) input {
   background-color: #4C9689;
   border-color: #4C9689;
 }
-.sudoku-container input.disabled.highlight {
+
+.sudoku-container input.player1 {
+  cursor: not-allowed;
+  background-color: #4f4ae0;
+  border-color: #4f4ae0;db74db
+}
+
+.sudoku-container input.player2 {
+  cursor: not-allowed;
+  background-color: #db74db;
+  border-color: #db74db;
+}
+
+.sudoku-container input.disabled.highlight, .sudoku-container input.player1.highlight, .sudoku-container input.player2.highlight {
   background-color: #29B6F6;
   border-color: #29B6F6;
 }

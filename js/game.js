@@ -165,6 +165,13 @@ var opponentPoints = 0;
 				isValid = this.validateNumber(val, row, col);
 				// Indicate error
 				input.classList.toggle("invalid", !isValid);
+                if (ready && !isValid == false) {
+                    if (mySide == 0) {
+                        game.game.cellMatrix[row][col].classList.add("player2");
+                    } else {
+                        game.game.cellMatrix[row][col].classList.add("player1");
+                    }
+                }
 			}
 
 			// Calculate section identifiers
@@ -181,7 +188,7 @@ var opponentPoints = 0;
 		onMouseDown: function(e) {
 			var t = e.target;
 
-			if ( t.nodeName === "INPUT" && t.classList.contains("disabled") ) {
+			if ( t.nodeName === "INPUT" && t.classList.contains("disabled") || t.classList.contains("player1") || t.classList.contains("player2") ) {
 				e.preventDefault();
 			}
 		},
@@ -225,7 +232,9 @@ var opponentPoints = 0;
             }
             $('#menu').css('display', 'block');
             $('.container').css('display', 'none');
+            $('.container').empty();
             $('#messages').html('');
+            ready = false;
             msgCount = 0;
         },
 
@@ -678,7 +687,6 @@ function controls() {
     const inputs = Array.from(document.querySelectorAll("input"));
     container.addEventListener("click", e => {
         const el = e.target.closest("input");
-
         if ( el ) {
             inputs.forEach(input => {
                 input.classList.toggle("highlight", input.value && input.value === el.value );
@@ -711,7 +719,10 @@ function startGame2(mySide, channel) {
     }
     setTimeout(() => {
         controls();
+<<<<<<< HEAD
+=======
 	ready = true;
+>>>>>>> 8567ec0680ad446f61d74a4ea57a8beefc42c94f
     }, 8000);
 }
 
@@ -734,5 +745,5 @@ function startGame() {
     game.start();
     setTimeout(() => {
         controls();
-    }, 5000);
+    }, 1000);
 }
