@@ -718,8 +718,8 @@ function startGame2(mySide, channel) {
         send(channel, 'matrix', [game.matrix, game.values]);
     }
     setTimeout(() => {
-        controls();
 	ready = true;
+        controls();
     }, 8000);
 }
 
