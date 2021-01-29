@@ -4,9 +4,9 @@ var IS_ONLINE = false;
 var channel;
 var myOpponent = null;
 
-var pubnub = new PubNub({
-    publishKey: 'pub-c-43932912-5193-46d1-8f53-9f099c81fa1e',
-    subscribeKey: 'sub-c-c53c013a-5df0-11eb-9654-ced561075670',
+const pubnub = new PubNub({
+    publishKey: "pub-c-4e9a760a-8391-4725-b9f4-eacdd9f7bede",
+    subscribeKey: "sub-c-0d9de90a-623a-11eb-81bb-860280fa0f6a",
     uuid: uuid
 });
 
