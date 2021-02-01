@@ -5,9 +5,9 @@ var channel;
 var myOpponent = null;
 
 const pubnub = new PubNub({
-    publishKey: "pub-c-4e9a760a-8391-4725-b9f4-eacdd9f7bede",
-    subscribeKey: "sub-c-0d9de90a-623a-11eb-81bb-860280fa0f6a",
-    uuid: uuid
+    publishKey: 'pub-c-5cfd29f0-f576-4304-aac3-5c866d79aac2',
+    subscribeKey: 'sub-c-f6bf0f24-28b5-11eb-862a-82af91a3b28d',
+    uuid: uuid,
 });
 
 pubnub.addListener({
