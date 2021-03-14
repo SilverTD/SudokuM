@@ -77,7 +77,7 @@ pubnub.addListener({
                 if (!isValid == false && ready) {
                     yourPoints += plusPoints;
                 } else if (!isValid == true && ready) {
-                    yourPoint -= lostPoints;
+                    yourPoints -= lostPoints;
                 }
                 game.game.showPoints(yourPoints, opponentPoints);
             }
