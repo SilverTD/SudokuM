@@ -3,6 +3,8 @@ var mySide = -1;
 var IS_ONLINE = false;
 var channel;
 var myOpponent = null;
+var lostPoints = 3;
+var plusPoints = 1;
 
 const pubnub = new PubNub({
     publishKey: 'pub-c-5cfd29f0-f576-4304-aac3-5c866d79aac2',
@@ -56,9 +58,9 @@ pubnub.addListener({
                 */
 
                 if (!isValid == false && ready) {
-                    opponentPoints++;
+                    opponentPoints += plusPoints;
                 } else if (!isValid == true && ready) {
-                    opponentPoints--;
+                    opponentPoints -= lostPoints;
                 }
                 game.game.showPoints(yourPoints, opponentPoints);
             }
@@ -73,9 +75,9 @@ pubnub.addListener({
                 let isValid = game.game.validateNumber(val, row, col);
 
                 if (!isValid == false && ready) {
-                    yourPoints++;
+                    yourPoints += plusPoints;
                 } else if (!isValid == true && ready) {
-                    yourPoints--;
+                    yourPoint -= lostPoints;
                 }
                 game.game.showPoints(yourPoints, opponentPoints);
             }
