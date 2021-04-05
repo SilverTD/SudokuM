@@ -57,10 +57,14 @@ pubnub.addListener({
                     else -> -1
                 */
 
-                if (!isValid == false && ready) {
+                if (isValid && ready) {
                     opponentPoints += plusPoints;
-                } else if (!isValid == true && ready) {
+                } else if (!isValid && ready) {
                     opponentPoints -= lostPoints;
+                    setTimeout(() => {
+                        game.game.cellMatrix[row][col].value = '';
+                        game.game.cellMatrix[row][col].classList.remove('invalid');
+                    }, 500);
                 }
                 game.game.showPoints(yourPoints, opponentPoints);
             }
@@ -74,10 +78,14 @@ pubnub.addListener({
             if (game && event.message.sender == uuid) {
                 let isValid = game.game.validateNumber(val, row, col);
 
-                if (!isValid == false && ready) {
+                if (isValid && ready) {
                     yourPoints += plusPoints;
-                } else if (!isValid == true && ready) {
+                } else if (!isValid && ready) {
                     yourPoints -= lostPoints;
+                    setTimeout(() => {
+                        game.game.cellMatrix[row][col].value = '';
+                        game.game.cellMatrix[row][col].classList.remove('invalid');
+                    }, 500);
                 }
                 game.game.showPoints(yourPoints, opponentPoints);
             }
@@ -99,6 +107,7 @@ pubnub.addListener({
         }
         if (event.message.type == 'chat') {
             ChatGame.handleChat(event.message.name, event.message.content);
+            $("#messages").stop().animate({ scrollTop: $("#messages")[0].scrollHeight}, 1000);
             if (event.message.sender != uuid) {
                 msgCount++;
             }

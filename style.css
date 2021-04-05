@@ -124,15 +124,15 @@ h1, h2 {
 #chatWindow {
     margin: auto;
     border: 5px solid #6b4367;
-    width: 500px;
-    height: 500px;
+    width: 400px;
+    height: 350px;
     padding: 70px 0;
     background: #332932;
     box-shadow: #4D394B;
     display: none;
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 70%;
+    left: 15%;
     z-index: 99;
     transform: translate(-50%, -50%);
     font-size: 30px;
@@ -144,7 +144,7 @@ h1, h2 {
     height: 100%;
     width: 100%;
     word-break: break-all;
-    overflow: hidden;
+    overflow: auto;
 }
 
 #chatWindow input {

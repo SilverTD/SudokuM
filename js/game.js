@@ -152,11 +152,11 @@ var opponentPoints = 0;
 			// Reset board validation class
 			this.table.classList.remove("valid-matrix");
 			input.classList.remove("invalid");
-
 			if (!util.isNumber(val)) {
 				input.value = "";
 				return false;
 			}
+			if (input.classList.length > 0) return;
 
             send(channel, 'choose', [val, input]);
 
@@ -165,7 +165,7 @@ var opponentPoints = 0;
 				isValid = this.validateNumber(val, row, col);
 				// Indicate error
 				input.classList.toggle("invalid", !isValid);
-                if (ready && !isValid == false) {
+                if (ready && isValid) {
                     if (mySide == 0) {
                         game.game.cellMatrix[row][col].classList.add("player2");
                     } else {
