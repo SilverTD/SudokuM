@@ -52,7 +52,9 @@ var opponentPoints = 0;
 		// Set the difficult of the game.
 		// This governs the amount of visible numbers
 		// when starting a new game.
-		difficulty: "normal"
+		difficulty: function() {
+			return document.getElementById('gameMode').value;
+		}
 	};
 
 	/**
@@ -586,6 +588,7 @@ var opponentPoints = 0;
 					"easy": 40,
 					"normal": 30,
 					"hard": 20,
+					"impossible": 10,
 				};
 
 			// Solve the game to get the solution
@@ -602,7 +605,7 @@ var opponentPoints = 0;
 			});
 
 			// Get random values for the start of the game
-			values = getUnique(arr, difficulties[this.game.config.difficulty]);
+			values = getUnique(arr, difficulties[this.game.config.difficulty()]);
             this.values = values;
             this.game.valuesMatrix = this.game.matrix.row;
 
@@ -716,7 +719,7 @@ function startGame2(mySide, channel) {
     if (mySide == 0) {
         game = new Sudoku(".container");
         game.start();
-        send(channel, 'matrix', [game.matrix, game.values]);
+        send(channel, 'matrix', [game.matrix, game.values, game.game.config.difficulty()]);
     }
     setTimeout(() => {
 	ready = true;
