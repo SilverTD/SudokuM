@@ -32,31 +32,9 @@
 
     <div id="menu" style="display:none">
         <div id="createLobbyWindow"></div>
-        <!-- <div id="createLobby">
-            <h1>Create Game</h1>
-            <input type="text" placeholder="Name..." id="hostGame">
-            <div class="input-group mt-2" style="width:340px !important">
-                <select class="custom-select" id="gameMode">
-                    <option value="normal" selected>Normal</option>
-                    <option value="easy">Easy</option>
-                    <option value="hard">Hard</option>
-                    <option value="impossible">Impossible</option>
-                </select>
-            </div>
-            <h2 id="code"></h2>
-        </div> -->
-        <!-- <div id="joinLobby">
-            <h1>Join Game</h1>
-            <input type="text" placeholder="Name..." id="username_input">
-            <input type="text" placeholder="Code..." id="joinGame">
-        </div> -->
         <div class="lobby-window">
             <h2 style="padding: 20px">Lobby</h2>
-            <ul id="games-list">
-                <!-- <li><a>[Silverboss] [Hard] [1/2]</a></li>
-                <li><a>[Silverboss] [Normal] [1/2]</a></li>
-                <li><a>[Silverboss] [Easy] [1/2]</a></li> -->
-            </ul>
+            <ul id="games-list"></ul>
         </div>
         <button onclick="createGame()">Create</button>
         <button onclick="startGame()">Play Single</button>
@@ -92,7 +70,7 @@
          builder.insertInto('#createLobbyWindow');
 
          $("#username_input")[0].addEventListener('keyup', (e) => {
-             if (e.keyCode === 13) {
+             if (e.keyCode === 13 && $("#username_input").val() != "") {
                  yourName = $("#username_input").val();
                  $("#createLobbyWindow").html("");
              }

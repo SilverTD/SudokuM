@@ -14,7 +14,6 @@ function joinLobby(id) {
                 channels: [channel],
                 withPresence: true
             });
-            console.log(this);
             send('lobby', 'join', [channel, info[0].slice(1), info[1].slice(1)]);
             send(channel, 'start', yourName);
         }

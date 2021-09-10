@@ -62,8 +62,6 @@ pubnub.addListener({
             }
         }
         else if (event.message.type == 'matrix') {
-            // console.log(event.message.content);
-            console.log(event.message.content[0]);
             if (event.message.sender != uuid) {
                 game = new Sudoku(".container");
                 game.joinGame(event.message.content[0], event.message.content[1]);
