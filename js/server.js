@@ -1,10 +1,13 @@
 const uuid = PubNub.generateUUID();
+const lostPoints = 3;
+const plusPoints = 1;
+
 var mySide = -1;
 var IS_ONLINE = false;
-var channel;
+var channel = 'lobby';
+var yourName;
 var myOpponent = null;
-var lostPoints = 3;
-var plusPoints = 1;
+var games = {};
 
 const pubnub = new PubNub({
     publishKey: 'pub-c-5cfd29f0-f576-4304-aac3-5c866d79aac2',
@@ -12,15 +15,40 @@ const pubnub = new PubNub({
     uuid: uuid,
 });
 
+pubnub.subscribe({
+    channels: [channel],
+    withPresence: true
+})
+
 pubnub.addListener({
     message: function(event) {
-        if (event.message.type == 'start') {
-            console.log(event.message);
+        if (event.message.type == 'create') {
+            games[event.message.content[0]] = {
+                name: event.message.content[1],
+                uuid: event.message.sender,
+                level: event.message.content[2],
+                channel: event.message.content[0],
+                players: event.message.content[3]
+            };
+        }
+        else if (event.message.type == 'join') {
+            window.clearInterval(spamLobby);
+            games[event.message.content[0]].players = "2/2";
+            spamLobby = window.setInterval(() => {
+                send('lobby', 'create', [
+                    games[event.message.content[0]].channel,
+                    games[event.message.content[0]].name,
+                    games[event.message.content[0]].level,
+                    games[event.message.content[0]].players
+                ]);
+            }, 3000);
+            showGames();
+        }
+        else if (event.message.type == 'start') {
             send(event.channel, "startingInfo", mySide);
         }
         else if (event.message.type == "startingInfo") {
             IS_ONLINE = true;
-            console.log(event.message.name);
             if (uuid != event.message.sender) {
                 myOpponent = event.message.name;
                 if (event.message.content != -1) { //if opponent has side
@@ -30,21 +58,21 @@ pubnub.addListener({
                         mySide = 0;
                     }
                 }
-                console.log(mySide);
                 startGame2(mySide, event.channel);
             }
         }
         else if (event.message.type == 'matrix') {
-            console.log(event.message.content);
+            // console.log(event.message.content);
+            console.log(event.message.content[0]);
             if (event.message.sender != uuid) {
                 game = new Sudoku(".container");
                 game.joinGame(event.message.content[0], event.message.content[1]);
             }
         }
         else if (event.message.type == 'choose') {
-            let row = event.message.content[1].row;
-            let col = event.message.content[1].col;
-            let val = event.message.content[0];
+            const row = event.message.content[1].row;
+            const col = event.message.content[1].col;
+            const val = event.message.content[0];
 
             if (game && event.message.sender != uuid) {
                 game.game.cellMatrix[row][col].value = val;
@@ -108,24 +136,30 @@ pubnub.addListener({
         if (event.message.type == 'chat') {
             ChatGame.handleChat(event.message.name, event.message.content);
             $("#messages").stop().animate({ scrollTop: $("#messages")[0].scrollHeight}, 1000);
-            if (event.message.sender != uuid) {
-                msgCount++;
-            }
-            if ($('#chatWindow').css('display') == 'block') {
-                msgCount = 0;
-            }
+            if (event.message.sender != uuid) msgCount++;
+            if ($('#chatWindow').css('display') == 'block') msgCount = 0;
             $('#chatBtn').html('Chat (' + msgCount + ')');
         }
+        if (event.message.type == 'win') {
+            window.clearInterval(spamLobby);
+            delete games[event.message.content[0]];
+        }
+        showGames();
     }
 });
 
-
-function send(channel, type, content)
-{
+function send(channel, type, content) {
     if (IS_ONLINE) {
         pubnub.publish({
             channel: channel,
-            message: { "sender": uuid, "type": type, "content": content, "name": $('#username_input').val() }
+            message:
+            {
+                sender: uuid,
+                type: type,
+                name: yourName,
+                content: content,
+                timesent: new Date().getTime() / 1000
+            }
         }, function (status, response) {
             //Handle error here
             if (status.error) {
@@ -134,3 +168,28 @@ function send(channel, type, content)
         });
     }
 };
+
+var checkGames = window.setInterval(
+    function(){
+        for (var property in games) {
+            if (games.hasOwnProperty(property)) {
+                var seconds = new Date().getTime() / 1000 - games[property].time
+                if(seconds > 15){
+                    delete games[property];
+                    showGames();
+                    break;
+                }
+            }
+        }
+    }
+,3000);
+
+
+var showGames = function() {
+    const builder = new HTMLBuilder();
+
+    for (let i in this.games)
+        builder.add(`<li><a id='${games[i].channel}' onclick='${games[i].players == "1/2" ? `joinLobby("${games[i].channel}")` : ""}'>[${games[i].name}] [${games[i].level}] [${games[i].players}] ${(games[i].players == "2/2") ? "Playing" : ""}</a></li>`);
+
+    builder.insertInto('#games-list');
+}

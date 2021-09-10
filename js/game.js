@@ -53,7 +53,7 @@ var opponentPoints = 0;
 		// This governs the amount of visible numbers
 		// when starting a new game.
 		difficulty: function() {
-			return document.getElementById('gameMode').value;
+			return $('#gameMode').val() || "normal";
 		}
 	};
 
@@ -237,7 +237,9 @@ var opponentPoints = 0;
             $('.container').empty();
             $('#messages').html('');
             ready = false;
+			inGame = false;
             msgCount = 0;
+			(IS_ONLINE) && send('lobby', 'win', channel);
         },
 
         showPoints: function(yourPoints, opponentPoints) {
@@ -710,6 +712,7 @@ function controls() {
 }
 
 var game;
+var inGame = false;
 var ready = false;
 
 function startGame2(mySide, channel) {
@@ -719,12 +722,13 @@ function startGame2(mySide, channel) {
     if (mySide == 0) {
         game = new Sudoku(".container");
         game.start();
+		inGame = true;
         send(channel, 'matrix', [game.matrix, game.values, game.game.config.difficulty()]);
     }
     setTimeout(() => {
-	ready = true;
+		ready = true;
         controls();
-    }, 8000);
+    }, 1000);
 }
 
 function startGame() {
@@ -744,6 +748,7 @@ function startGame() {
 
     game = new Sudoku("#singleMatch");
     game.start();
+	inGame = true;
     setTimeout(() => {
         controls();
     }, 1000);

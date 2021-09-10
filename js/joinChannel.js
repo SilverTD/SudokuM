@@ -1,24 +1,25 @@
-$('#joinGame')[0].addEventListener('keyup', (e) => {
-    if(e.keyCode === 13 && $('#joinGame').val() !== "" && $('#username_input').val() !== "") {
-        IS_ONLINE = true;
-        channel = $('#joinGame').val().toUpperCase();
-            pubnub.hereNow({
+function joinLobby(id) {
+    IS_ONLINE = true;
+    channel = id;
+    let info = $(`#${id}`)[0].innerText.split(']');
+    pubnub.hereNow({
+        channels: [channel],
+        includeUUIDs: true,
+        includeState: true,
+    }, (status, response) => {
+        // handle status, response
+        console.log(response);
+        if (response.totalOccupancy == 1) {
+            pubnub.subscribe({
                 channels: [channel],
-                includeUUIDs: true,
-                includeState: true,
-            }, (status, response) => {
-                // handle status, response
-                console.log(response);
-                if (response.totalOccupancy == 1) {
-                    pubnub.subscribe({
-                        channels: [channel],
-                        withPresence: true
-                    });
-                    send(channel, 'start', $('#username_input').val());
-                }
-                else {
-                    console.log("No lobby found!");
-                }
+                withPresence: true
             });
+            console.log(this);
+            send('lobby', 'join', [channel, info[0].slice(1), info[1].slice(1)]);
+            send(channel, 'start', yourName);
         }
-});
+        else {
+            console.log("No lobby found!");
+        }
+    });
+}
