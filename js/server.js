@@ -44,6 +44,11 @@ pubnub.addListener({
             }, 3000);
             showGames();
         }
+        else if (event.message.type == 'delete-lobby') {
+            window.clearInterval(spamLobby);
+            delete games[event.message.content];
+            showGames();
+        }
         else if (event.message.type == 'start') {
             send(event.channel, "startingInfo", mySide);
         }
@@ -138,9 +143,8 @@ pubnub.addListener({
             if ($('#chatWindow').css('display') == 'block') msgCount = 0;
             $('#chatBtn').html('Chat (' + msgCount + ')');
         }
-        if (event.message.type == 'win') {
-            window.clearInterval(spamLobby);
-            delete games[event.message.content[0]];
+        if (event.message.type == 'leave-game') {
+            game.game.checkWinner(true, event.message.sender);
         }
         showGames();
     }

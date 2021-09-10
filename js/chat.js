@@ -11,7 +11,7 @@ ChatGame_.prototype.handleChat = function (name, msg)
     this.chatMsg.push({"name": name, "msg": msg});
 
     if (this.chatMsg.length > 5)
-        this.chatMsg.splice(0, 1);
+        this.chatMsg.shift();
 
     this.addToDiv();
 }

@@ -224,22 +224,32 @@ var opponentPoints = 0;
          * Check winner
          */
 
-        checkWinner: function() {
-            if (yourPoints > opponentPoints) {
-                alert('You won');
-            } else if (yourPoints == opponentPoints) {
-                alert('Tied');
-            } else {
-                alert('You Lost');
-            }
+        checkWinner: function(IS_LEFT, userId) {
+			console.log(IS_LEFT, userId);
+            if (IS_LEFT) {
+				if (userId == uuid) {}
+				else alert("You won, your opponent has left");
+			}
             $('#menu').css('display', 'block');
             $('.container').css('display', 'none');
-            $('.container').empty();
+            $('.sudoku-container').remove();
             $('#messages').html('');
             ready = false;
-			inGame = false;
-            msgCount = 0;
-			(IS_ONLINE) && send('lobby', 'win', channel);
+            msgCount = yourPoints = opponentPoints = 0;
+			mySide = -1;
+			this.showPoints(yourPoints, opponentPoints);
+			if (IS_ONLINE) {
+				let oldChannel = channel;
+				channel = 'lobby';
+				pubnub.subscribe({
+	                channels: [channel],
+	                withPresence: true
+	            });
+				send(channel, 'delete-lobby', oldChannel);
+				window.clearInterval(spamLobby);
+	            delete games[oldChannel];
+	            showGames();
+			}
         },
 
         showPoints: function(yourPoints, opponentPoints) {
@@ -712,17 +722,14 @@ function controls() {
 }
 
 var game;
-var inGame = false;
 var ready = false;
 
 function startGame2(mySide, channel) {
-    console.log(mySide, channel);
     $('#menu').css('display', 'none');
      $('.container').fadeIn();
     if (mySide == 0) {
         game = new Sudoku(".container");
         game.start();
-		inGame = true;
         send(channel, 'matrix', [game.matrix, game.values, game.game.config.difficulty()]);
     }
     setTimeout(() => {
@@ -748,8 +755,9 @@ function startGame() {
 
     game = new Sudoku("#singleMatch");
     game.start();
-	inGame = true;
     setTimeout(() => {
         controls();
     }, 1000);
 }
+
+const quitGame = () => send(channel, 'leave-game', null);
