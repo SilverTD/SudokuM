@@ -33,13 +33,13 @@ pubnub.addListener({
         }
         else if (event.message.type == 'join') {
             window.clearInterval(spamLobby);
-            games[event.message.content[0]].players = "2/2";
+            games[event.message.content].players = "2/2";
             spamLobby = window.setInterval(() => {
                 send('lobby', 'create', [
-                    games[event.message.content[0]].channel,
-                    games[event.message.content[0]].name,
-                    games[event.message.content[0]].level,
-                    games[event.message.content[0]].players
+                    games[event.message.content].channel,
+                    games[event.message.content].name,
+                    games[event.message.content].level,
+                    games[event.message.content].players
                 ]);
             }, 3000);
             showGames();

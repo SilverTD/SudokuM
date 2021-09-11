@@ -53,7 +53,7 @@ var opponentPoints = 0;
 		// This governs the amount of visible numbers
 		// when starting a new game.
 		difficulty: function() {
-			return $('#gameMode').val() || "normal";
+			return $('#gameMode').val();
 		}
 	};
 
@@ -225,10 +225,17 @@ var opponentPoints = 0;
          */
 
         checkWinner: function(IS_LEFT, userId) {
-			console.log(IS_LEFT, userId);
             if (IS_LEFT) {
 				if (userId == uuid) {}
-				else alert("You won, your opponent has left");
+				else addMsg("You won, your opponent has left");
+			} else {
+				addMsg(
+					(yourPoints > opponentPoints) ?
+					"You won !!" :
+					(yourPoints == opponentPoints) ?
+					"Tied !!" :
+					"You Lost !!"
+				);
 			}
             $('#menu').css('display', 'block');
             $('.container').css('display', 'none');
@@ -331,7 +338,7 @@ var opponentPoints = 0;
                 if (!IS_ONLINE) {
                     life--;
                     if (life < 0) {
-                        alert('YOU LOST, You were wrong 3 times');
+                        addMsg('YOU LOST, You were wrong 3 times');
                         $('#menu').css('display', 'block');
                         $('#singleMatch').css('display', 'none');
                         $('#singleMatch').empty();
@@ -564,7 +571,8 @@ var opponentPoints = 0;
 		}
 	}
 
-	var Sudoku = function(container, settings) {
+	var Sudoku = function(container, mode = null, settings) {
+		this.mode = mode;
 		this.container = container;
 
 		if (typeof container === "string") {
@@ -617,7 +625,7 @@ var opponentPoints = 0;
 			});
 
 			// Get random values for the start of the game
-			values = getUnique(arr, difficulties[this.game.config.difficulty()]);
+			values = getUnique(arr, difficulties[this.game.config.difficulty() || this.mode]);
             this.values = values;
             this.game.valuesMatrix = this.game.matrix.row;
 
@@ -721,6 +729,13 @@ function controls() {
     });
 }
 
+function removeCell(row, col) {
+	setTimeout(() => {
+		game.game.cellMatrix[row][col].value = '';
+		game.game.cellMatrix[row][col].classList.remove('invalid');
+	}, 500);
+}
+
 var game;
 var ready = false;
 
@@ -731,6 +746,8 @@ function startGame2(mySide, channel) {
         game = new Sudoku(".container");
         game.start();
         send(channel, 'matrix', [game.matrix, game.values, game.game.config.difficulty()]);
+		$("#createLobby").remove();
+		$("#mask").remove();
     }
     setTimeout(() => {
 		ready = true;
@@ -738,7 +755,7 @@ function startGame2(mySide, channel) {
     }, 1000);
 }
 
-function startGame() {
+function startGame(mode = null) {
     IS_ONLINE = false;
     $('#menu').css('display', 'none');
     $('#singleMatch').fadeIn();
@@ -753,11 +770,22 @@ function startGame() {
 
     builder.appendInto('#singleMatch');
 
-    game = new Sudoku("#singleMatch");
+    game = new Sudoku("#singleMatch", mode);
     game.start();
     setTimeout(() => {
         controls();
     }, 1000);
+}
+
+function addMsg(msg) {
+	const builder = new HTMLBuilder();
+    builder.add(`
+        <div style='position: fixed; left: 0; top: 0; width: 100%; height: 100%;background: rgba(0,0,0,0.5); z-index: 100' onclick='$("#msgWindow").remove(); $(this).remove()'></div>
+        <div id="msgWindow">
+			<p>${msg}</p>
+        </div>
+    `);
+    builder.appendInto('body');
 }
 
 const quitGame = () => send(channel, 'leave-game', null);

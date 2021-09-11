@@ -10,9 +10,9 @@
 </head>
 <body>
     <img id="logo" src="logo.png" height="200" style="position: absolute; top: 0; left:0;right:0;margin:auto; display: none">
-    <p id="version">v1.0</p>
+    <p id="version">v1.1</p>
     <div class="container" style="display: none">
-        <button id="quitButton" onclick="quitGame()">Quit</button>
+        <button onclick="quitGame()">Quit</button>
         <button onclick="$('#chatWindow').fadeIn()" id="chatBtn">Chat (0) </button>
         <div id="user1Side">
             <h1>You</h1>
@@ -32,18 +32,13 @@
     <div id="singleMatch" style="display: none"></div>
 
     <div id="menu" style="display:none">
-        <div id="createLobbyWindow"></div>
         <div class="lobby-window">
             <h2 style="padding: 20px">Lobby</h2>
             <ul id="games-list"></ul>
         </div>
         <button onclick="createGame()">Create</button>
-        <button onclick="startGame()">Play Single</button>
+        <button onclick="joinSingleGame()">Play Single</button>
         <button onclick="location.href='https://www.youtube.com/watch?v=iKcOA9LZD20';">Tutorial</button>
-        <!-- <ul id="contact">
-            <a href="https://github.com/silverbossTD/"><i class="fa fa-github" style="font-size: 40px;color: white;margin: 10px"></i></a>
-            <a href="https://www.facebook.com/silver.boss.3781"><i class="fa fa-facebook" style="font-size: 40px;color: white;margin: 10px"></i></a>
-        </ul> -->
     </div>
 
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -62,18 +57,19 @@
          $('#logo').fadeIn();
          const builder = new HTMLBuilder();
          builder.add(`
-             <div style='position: fixed; left: 0; top: 0; width: 100%; height: 100%;background: rgba(0,0,0,0.5)'></div>
+             <div id='mask' style='position: fixed; left: 0; top: 0; width: 100%; height: 100%;background: rgba(0,0,0,0.5); z-index: 100'></div>
              <div id="enterName-window">
                  <h1>Enter your name:</h1>
                  <input type="text" placeholder="Name..." id="username_input">
              </div>
          `);
-         builder.insertInto('#createLobbyWindow');
+         builder.appendInto('body');
 
          $("#username_input")[0].addEventListener('keyup', (e) => {
              if (e.keyCode === 13 && $("#username_input").val() != "") {
                  yourName = $("#username_input").val();
-                 $("#createLobbyWindow").html("");
+                 $("#enterName-window").remove();
+                 $("#mask").remove();
              }
          });
      });

@@ -27,7 +27,7 @@ function createGame() {
     code = generateKey(4);
     const builder = new HTMLBuilder();
     builder.add(`
-        <div style='position: fixed; left: 0; top: 0; width: 100%; height: 100%;background: rgba(0,0,0,0.5)' onclick='$("#createLobbyWindow").html("")'></div>
+        <div id='mask' style='position: fixed; left: 0; top: 0; width: 100%; height: 100%;background: rgba(0,0,0,0.5); z-index: 100' onclick='$("#createLobby").remove(); $(this).remove()'></div>
         <div id="createLobby">
             <h1>Create Lobby</h1>
             <input type="text" placeholder="Game name..." value="${yourName}'s game" id="hostLobby">
@@ -44,7 +44,7 @@ function createGame() {
             </p>
         </div>
     `);
-    builder.appendInto('#createLobbyWindow');
+    builder.appendInto('body');
 
     $('#hostLobby')[0].addEventListener('keyup', (e) => {
         if (e.keyCode === 13) {
