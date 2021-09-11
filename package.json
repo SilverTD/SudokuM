@@ -1,0 +1,24 @@
+{
+  "name": "Sudoku Multiplayer",
+  "version": "1.0.0",
+  "description": "![alt text](https://media.discordapp.net/attachments/717309189957091358/820253793504460870/Screenshot_2021-03-13_at_6.12.48_PM.png?width=751&height=422)",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/silverbossTD/SudokuMultiplayer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/silverbossTD/SudokuMultiplayer/issues"
+  },
+  "homepage": "https://github.com/silverbossTD/SudokuMultiplayer#readme",
+  "dependencies": {
+    "electron": "^14.0.0",
+    "electron-packager": "^15.4.0"
+  }
+}

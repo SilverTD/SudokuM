@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/app.css">
+</head>
+<body>
+    <header id="titlebar">
+        <div id="drag-region">
+            <div id="window-title">
+                <span style="margin-left: 10px; font-size: 15px">Sudoku Multiplayer</span>
+            </div>
+            <div id="window-controls">
+                <div class="button" id="min-button">
+                    <img class="icon" srcset="./assets/icons/min-w-10.png 1x, ./assets/icons/min-w-12.png 1.25x, ./assets/icons/min-w-15.png 1.5x, ./assets/icons/min-w-15.png 1.75x, ./assets/icons/min-w-20.png 2x, ./assets/icons/min-w-20.png 2.25x, ./assets/icons/min-w-24.png 2.5x, ./assets/icons/min-w-30.png 3x, ./assets/icons/min-w-30.png 3.5x" draggable="false" />
+                </div>
+                <div class="button" id="max-button">
+                    <img class="icon" srcset="./assets/icons/max-w-10.png 1x, ./assets/icons/max-w-12.png 1.25x, ./assets/icons/max-w-15.png 1.5x, ./assets/icons/max-w-15.png 1.75x, ./assets/icons/max-w-20.png 2x, ./assets/icons/max-w-20.png 2.25x, ./assets/icons/max-w-24.png 2.5x, ./assets/icons/max-w-30.png 3x, ./assets/icons/max-w-30.png 3.5x" draggable="false" />
+                </div>
+                <div class="button" id="restore-button">
+                    <img class="icon" srcset="./assets/icons/restore-w-10.png 1x, ./assets/icons/restore-w-12.png 1.25x, ./assets/icons/restore-w-15.png 1.5x, ./assets/icons/restore-w-15.png 1.75x, ./assets/icons/restore-w-20.png 2x, ./assets/icons/restore-w-20.png 2.25x, ./assets/icons/restore-w-24.png 2.5x, ./assets/icons/restore-w-30.png 3x, ./assets/icons/restore-w-30.png 3.5x" draggable="false" />
+                </div>
+                <div class="button" id="close-button">
+                    <img class="icon" srcset="./assets/icons/close-w-10.png 1x, ./assets/icons/close-w-12.png 1.25x, ./assets/icons/close-w-15.png 1.5x, ./assets/icons/close-w-15.png 1.75x, ./assets/icons/close-w-20.png 2x, ./assets/icons/close-w-20.png 2.25x, ./assets/icons/close-w-24.png 2.5x, ./assets/icons/close-w-30.png 3x, ./assets/icons/close-w-30.png 3.5x" draggable="false" />
+                </div>
+            </div>
+        </div>
+    </header>
+    <img id="logo" src="logo.png" height="200" style="position: absolute; top: 30%; left:0;right:0;margin:auto; display: none;z-index:-11">
+    <div id="main">
+        <p id="version">v1.2</p>
+        <div class="container" style="display: none">
+            <button onclick="quitGame()">Quit</button>
+            <button onclick="$('#chatWindow').fadeIn()" id="chatBtn">Chat (0) </button>
+            <div id="user1Side">
+                <h1>You</h1>
+                <h2 id="yourPoints">0 Points</h2>
+            </div>
+            <div id="user2Side">
+                <h1>Opponent</h1>
+                <h2 id="opponentPoints">0 Points</h2>
+            </div>
+            <div id="chatWindow">
+                <button id="closeChat" onclick="$('#chatWindow').fadeOut()">X</button>
+                <ul id="messages"></ul>
+                <input id="inputChat" type="text" maxlength="300" class="form-control input-sm chat_input" placeholder="Write your message here...">
+            </div>
+        </div>
+
+        <div id="singleMatch" style="display: none"></div>
+
+        <div id="menu" style="display:none">
+            <div class="lobby-window">
+                <h2 style="padding: 20px">Lobby</h2>
+                <ul id="games-list"></ul>
+            </div>
+            <button onclick="createGame()">Create</button>
+            <button onclick="joinSingleGame()">Play Single</button>
+            <button onclick="location.href='https://www.youtube.com/watch?v=iKcOA9LZD20'">Tutorial</button>
+        </div>
+    </div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.27.4.min.js"></script>
+
+<script src="scripts/HTMLbuilder.js" charset="utf-8"></script>
+<script src="scripts/server.js" charset="utf-8"></script>
+<script src="scripts/game.js" charset="utf-8"></script>
+<script src="scripts/functions.js" charset="utf-8"></script>
+<script src="scripts/sudoku.js" charset="utf-8"></script>
+<script src="scripts/host.js" charset="utf-8"></script>
+<script src="scripts/joinChannel.js" charset="utf-8"></script>
+<script src="scripts/chat.js" charset="utf-8"></script>
+
+<script type="text/javascript">
+     $(document).ready(function(){
+         $('#menu').fadeIn();
+         $('#logo').fadeIn();
+         const builder = new HTMLBuilder();
+         builder.add(`
+             <div id='mask' style='position: fixed; left: 0; top: 0; width: 100%; height: 100%;background: rgba(0,0,0,0.5); z-index: 100'></div>
+             <div id="enterName-window">
+                 <h1>Enter your name:</h1>
+                 <input type="text" placeholder="Name..." id="username_input">
+             </div>
+         `);
+         builder.appendInto('body');
+
+         $("#username_input")[0].addEventListener('keyup', (e) => {
+             if (e.keyCode === 13 && $("#username_input").val() != "") {
+                 yourName = $("#username_input").val();
+                 $("#enterName-window").remove();
+                 $("#mask").remove();
+             }
+         });
+     });
+</script>
+</body>
+</html>
