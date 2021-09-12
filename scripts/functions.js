@@ -56,10 +56,7 @@ function startGame2(mySide, channel) {
         $('#createLobby').remove();
         $('#mask').remove();
     }
-    setTimeout(() => {
-        ready = true;
-        controls();
-    }, 1000);
+    setTimeout(() => controls(), 1000);
 }
 
 function startGame(mode = null) {

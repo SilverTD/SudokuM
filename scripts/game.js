@@ -125,7 +125,7 @@ class Game {
             isValid = this.validateNumber(val, row, col);
             // Indicate error
             input.classList.toggle('invalid', !isValid);
-            if (ready && isValid)
+            if (isValid)
                 game.game.cellMatrix[row][col].classList.add((mySide == 0) ? 'player2' : 'player1');
         }
 
@@ -186,7 +186,6 @@ class Game {
         $('.sudoku-container').remove();
         $('#messages').html('');
 
-        ready = false;
         msgCount = yourPoints = opponentPoints = 0;
         mySide = -1;
         this.showPoints(yourPoints, opponentPoints);
@@ -391,4 +390,3 @@ class Game {
 }
 
 var game;
-var ready = false;

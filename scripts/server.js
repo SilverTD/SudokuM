@@ -84,30 +84,26 @@ pubnub.addListener({
                 game.game.cellMatrix[row][col].value = val;
                 game.game.cellMatrix[row][col].classList.toggle('invalid', !isValid);
 
-                if (ready) {
-                    if (isValid)
-                        opponentPoints += plusPoints;
-                    else {
-                        opponentPoints -= lostPoints;
-                        removeCell(row, col);
-                    }
+                if (isValid)
+                    opponentPoints += plusPoints;
+                else {
+                    opponentPoints -= lostPoints;
+                    removeCell(row, col);
                 }
                 game.game.showPoints(yourPoints, opponentPoints);
             }
 
-            if (event.message.sender == uuid && ready) {
-                if (ready) {
-                    if (isValid)
-                        yourPoints += plusPoints;
-                    else {
-                        yourPoints -= lostPoints;
-                        removeCell(row, col);
-                    }
+            if (event.message.sender == uuid) {
+                if (isValid)
+                    yourPoints += plusPoints;
+                else {
+                    yourPoints -= lostPoints;
+                    removeCell(row, col);
                 }
                 game.game.showPoints(yourPoints, opponentPoints);
             }
 
-            if (ready && isValid && event.message.sender != uuid) {
+            if (isValid && event.message.sender != uuid) {
                 if (mySide == 0) game.game.cellMatrix[row][col].classList.add('player1');
                 else game.game.cellMatrix[row][col].classList.add('player2');
             }
