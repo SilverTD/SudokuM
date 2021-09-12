@@ -26,11 +26,10 @@ pubnub.addListener({
     message: function(event) {
         if (event.message.type == 'create') {
             games[event.message.content[0]] = {
-                name: event.message.content[1],
-                uuid: event.message.sender,
-                level: event.message.content[2],
                 channel: event.message.content[0],
-                players: event.message.content[3]
+                name: event.message.content[1],
+                level: event.message.content[2],
+                players: event.message.content[3],
             };
         }
         else if (event.message.type == 'join') {
@@ -41,7 +40,7 @@ pubnub.addListener({
                     games[event.message.content].channel,
                     games[event.message.content].name,
                     games[event.message.content].level,
-                    games[event.message.content].players
+                    games[event.message.content].players,
                 ]);
             }, 3000);
             showGames();
@@ -49,15 +48,16 @@ pubnub.addListener({
         else if (event.message.type == 'delete-lobby') {
             window.clearInterval(spamLobby);
             delete games[event.message.content];
+            console.log(games, event.message.content);
             showGames();
         }
         else if (event.message.type == 'start') {
+            IS_ONLINE = true;
             inGame = true;
             chatGame = new ChatGame();
             send(event.channel, 'startingInfo', mySide);
         }
         else if (event.message.type == 'startingInfo') {
-            IS_ONLINE = true;
             if (uuid != event.message.sender) {
                 myOpponent = event.message.name;
                 console.log(event.message.content, event.message.sender);
@@ -71,6 +71,7 @@ pubnub.addListener({
                 game = new Sudoku('.container');
                 game.joinGame(event.message.content[0], event.message.content[1]);
             }
+            controls();
         }
         else if (event.message.type == 'choose') {
             const row = event.message.content[1].row;
@@ -122,8 +123,6 @@ pubnub.addListener({
         }
         if (event.message.type == 'leave-game') {
             game.game.checkWinner(true, event.message.sender);
-            IS_ONLINE = false;
-            inGame = false;
         }
 
         showGames();
@@ -165,7 +164,6 @@ var checkGames = window.setInterval( () => {
         }
     }
 }, 3000);
-
 
 function showGames() {
     const builder = new HTMLBuilder();

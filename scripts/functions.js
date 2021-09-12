@@ -37,10 +37,8 @@ function controls() {
 }
 
 function removeCell(row, col) {
-    setTimeout(() => {
-        game.game.cellMatrix[row][col].value = '';
-        game.game.cellMatrix[row][col].classList.remove('invalid');
-    }, 500);
+	game.game.cellMatrix[row][col].value = '';
+	game.game.cellMatrix[row][col].classList.remove('invalid');
 }
 
 function startGame2(mySide, channel) {
@@ -56,7 +54,6 @@ function startGame2(mySide, channel) {
         $('#createLobby').remove();
         $('#mask').remove();
     }
-    setTimeout(() => controls(), 1000);
 }
 
 function startGame(mode = null) {
@@ -74,7 +71,7 @@ function startGame(mode = null) {
 
     game = new Sudoku('#singleMatch', mode);
     game.start();
-    setTimeout(() => controls(), 1000);
+	controls();
 }
 
 function addMsg(msg) {
@@ -87,7 +84,7 @@ function addMsg(msg) {
     `).appendInto('body');
 }
 
-const quitGame = () => send(channel, 'leave-game', null);
+const quitGame = () => send(channel, 'leave-game', true);
 
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max + 1)) + min;

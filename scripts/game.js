@@ -190,19 +190,24 @@ class Game {
         mySide = -1;
         this.showPoints(yourPoints, opponentPoints);
 
-        if (IS_ONLINE) {
-			IS_ONLINE = false;
-            let oldChannel = channel;
-            channel = 'lobby';
-            pubnub.subscribe({
-                channels: [channel],
-                withPresence: true
-            });
-            send(channel, 'delete-lobby', oldChannel);
-            window.clearInterval(spamLobby);
-            delete games[oldChannel];
-            showGames();
-        }
+        if (!IS_ONLINE) return;
+
+		let oldChannel = channel;
+		channel = 'lobby';
+
+		pubnub.subscribe({
+			channels: [channel],
+			withPresence: true
+		});
+
+		send(channel, 'delete-lobby', oldChannel);
+		
+		window.clearInterval(spamLobby);
+		delete games[oldChannel];
+		showGames();
+
+		IS_ONLINE = false;
+		inGame = false;
     }
     showPoints(yourPoints, opponentPoints) {
         $('#yourPoints').html(yourPoints + ' Points');
