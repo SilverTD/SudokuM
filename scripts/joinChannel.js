@@ -1,26 +1,24 @@
 function joinSingleGame() {
-    const builder = new HTMLBuilder();
-    builder.add(`
-        <div id='mask' style='position: fixed; left: 0; top: 0; width: 100%; height: 100%;background: rgba(0,0,0,0.5); z-index: 100' onclick='$("#createLobby").remove(); $(this).remove()'></div>
-        <div id="createLobby">
+    new HTMLBuilder().add(`
+        <div id='mask' onclick='$("#createLobby").remove(); $(this).remove()'></div>
+        <div id='createLobby'>
             <h1>Choose mode</h1>
-            <div class="input-group mt-2" style="width:340px !important">
-                <select class="custom-select" id="gameMode">
-                    <option value="normal" selected>Normal</option>
-                    <option value="easy">Easy</option>
-                    <option value="hard">Hard</option>
-                    <option value="impossible">Impossible</option>
+            <div class='input-group mt-2' style='width:340px !important'>
+                <select class='custom-select' id='gameMode'>
+                    <option value='normal' selected>Normal</option>
+                    <option value='easy'>Easy</option>
+                    <option value='hard'>Hard</option>
+                    <option value='impossible'>Impossible</option>
                 </select>
             </div>
-            <button onclick="createSinglegame($('#gameMode').val())" style="background: #4D394B">Create</button>
+            <button onclick='createSinglegame($("#gameMode").val())' style='background: #4D394B'>Create</button>
         </div>
-    `);
-    builder.appendInto('body');
+    `).appendInto('body');
 }
 
 function createSinglegame(mode) {
-    $("#createLobby").remove();
-    $("#mask").remove();
+    $('#createLobby').remove();
+    $('#mask').remove();
     startGame(mode);
 }
 
@@ -41,9 +39,8 @@ function joinLobby(id) {
             });
             send('lobby', 'join', channel);
             send(channel, 'start', yourName);
-        }
-        else {
-            console.log("No lobby found!");
+        } else {
+            console.log('No lobby found!');
         }
     });
 }

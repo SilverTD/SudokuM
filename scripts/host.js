@@ -1,5 +1,5 @@
 function generateKey(length = 4, specificKey = null) {
-    let key = ""
+    let key = ''
     for (var i = 0; i < length; i++) {
         let randNum = Math.floor(10 + 26 * Math.random())
         key += randNum.toString(36).toLocaleUpperCase()
@@ -14,9 +14,7 @@ var code;
 var spamLobby;
 
 function createLobby(uuid, channel, name, level) {
-    spamLobby = window.setInterval(() => {
-        send('lobby', 'create', [channel, name, level, "1/2"]);
-    }, 3000);
+    spamLobby = window.setInterval(() => send('lobby', 'create', [channel, name, level, '1/2']), 3000);
     pubnub.subscribe({
         channels: [channel],
         withPresence: true
@@ -27,24 +25,23 @@ function createGame() {
     code = generateKey(4);
     const builder = new HTMLBuilder();
     builder.add(`
-        <div id='mask' style='position: fixed; left: 0; top: 0; width: 100%; height: 100%;background: rgba(0,0,0,0.5); z-index: 100' onclick='$("#createLobby").remove(); $(this).remove()'></div>
-        <div id="createLobby">
+        <div id='mask' onclick='$("#createLobby").remove(); $(this).remove()'></div>
+        <div id='createLobby'>
             <h1>Create Lobby</h1>
-            <input type="text" placeholder="Game name..." value="${yourName}'s game" id="hostLobby">
-            <div class="input-group mt-2" style="width:340px !important">
-                <select class="custom-select" id="gameMode">
-                    <option value="normal" selected>Normal</option>
-                    <option value="easy">Easy</option>
-                    <option value="hard">Hard</option>
-                    <option value="impossible">Impossible</option>
+            <input type='text' placeholder='Game name...' value="${yourName}'s game" id='hostLobby'>
+            <div class='input-group mt-2' style='width:340px !important'>
+                <select class='custom-select' id='gameMode'>
+                    <option value='normal' selected>Normal</option>
+                    <option value='easy'>Easy</option>
+                    <option value='hard'>Hard</option>
+                    <option value='impossible'>Impossible</option>
                 </select>
             </div>
             <p style='color: white; font-size: 20px; padding: 5px'>
-                <span id="status"></span>
+                <span id='status'></span>
             </p>
         </div>
-    `);
-    builder.appendInto('body');
+    `).appendInto('body');
 
     $('#hostLobby')[0].addEventListener('keyup', (e) => {
         if (e.keyCode === 13) {
