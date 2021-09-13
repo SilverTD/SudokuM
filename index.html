@@ -58,6 +58,11 @@
          $('#menu').fadeIn();
          $('#logo').fadeIn();
 
+         if (localStorage.getItem('username')) {
+             myName = localStorage.getItem('username');
+             return;
+         }
+
          new HTMLBuilder().add(`
              <div id='mask' style='position: fixed; left: 0; top: 0; width: 100%; height: 100%;background: rgba(0,0,0,0.5); z-index: 100'></div>
              <div id="enterName-window">
@@ -68,9 +73,10 @@
 
          $("#username_input")[0].addEventListener('keyup', (e) => {
              if (e.keyCode === 13 && $("#username_input").val() != "") {
-                 yourName = $("#username_input").val();
+                 myName = $("#username_input").val();
                  $("#enterName-window").remove();
                  $("#mask").remove();
+                 localStorage.setItem('username', myName);
              }
          });
      });

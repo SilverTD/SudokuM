@@ -38,7 +38,7 @@ function joinLobby(id) {
                 withPresence: true
             });
             send('lobby', 'join', channel);
-            send(channel, 'start', yourName);
+            send(channel, 'start', myName);
         } else {
             console.log('No lobby found!');
         }

@@ -149,22 +149,14 @@ class Game {
         }
     }
     winLose(num, rowID, colID) {
-        let wrong = 0;
-        let win = false;
         for (let i = 0; i < 9; i++) {
             for (let j = 0; j < 9; j++) {
                 if (this.cellMatrix[i][j].value != this.valuesMatrix[i][j]) {
-                    wrong++;
+                    return;
                 }
             }
         }
-
-        if (wrong > 0) {
-            win = false;
-        } else {
-            win = true;
-            this.checkWinner();
-        }
+        this.checkWinner();
     }
     checkWinner(IS_LEFT, userId) {
         if (IS_LEFT) {
@@ -201,7 +193,7 @@ class Game {
 		});
 
 		send(channel, 'delete-lobby', oldChannel);
-		
+
 		window.clearInterval(spamLobby);
 		delete games[oldChannel];
 		showGames();

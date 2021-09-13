@@ -6,7 +6,7 @@ var IS_ONLINE = false;
 
 var mySide = -1;
 var channel = 'lobby';
-var yourName = null;
+var myName = null;
 var myOpponent = null;
 var inGame = false;
 var games = {};
@@ -48,11 +48,9 @@ pubnub.addListener({
         else if (event.message.type == 'delete-lobby') {
             window.clearInterval(spamLobby);
             delete games[event.message.content];
-            console.log(games, event.message.content);
             showGames();
         }
         else if (event.message.type == 'start') {
-            IS_ONLINE = true;
             inGame = true;
             chatGame = new ChatGame();
             send(event.channel, 'startingInfo', mySide);
@@ -60,7 +58,6 @@ pubnub.addListener({
         else if (event.message.type == 'startingInfo') {
             if (uuid != event.message.sender) {
                 myOpponent = event.message.name;
-                console.log(event.message.content, event.message.sender);
                 if (event.message.content == 0) mySide = 1;
                 else mySide = 0;
                 startGame2(mySide, event.channel);
@@ -139,7 +136,7 @@ function send(channel, type, content) {
             message: {
                 sender: uuid,
                 type: type,
-                name: yourName,
+                name: myName,
                 content: content,
                 timesent: new Date().getTime() / 1000
             }
