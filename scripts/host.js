@@ -14,7 +14,11 @@ var code;
 var spamLobby;
 
 function createLobby(uuid, channel, name, level) {
-    spamLobby = window.setInterval(() => send('lobby', 'create', [channel, name, level, '1/2']), 3000);
+    const player = {
+        name: myName,
+        score: 0
+    }
+    spamLobby = window.setInterval(() => send('lobby', 'create', [channel, name, level, '1/2', player, null]), 3000);
     pubnub.subscribe({
         channels: [channel],
         withPresence: true

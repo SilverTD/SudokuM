@@ -1,8 +1,7 @@
 'use strict';
 
 var life = 3;
-var yourPoints = 0;
-var opponentPoints = 0;
+var myScore = 0;
 
 var util = {
     extend: function(src, props) {
@@ -159,15 +158,16 @@ class Game {
         this.checkWinner();
     }
     checkWinner(IS_LEFT, userId) {
+        const opponentScore = games[channel].players[Object.keys(games[channel].players)
+                            .filter(i => i !== uuid)].score;
         if (IS_LEFT) {
-            if (userId == uuid) {}
-			else addMsg('You won, your opponent has left');
+            if (userId != uuid) addMsg('You won, your opponent has left');
         }
 		else {
             addMsg(
-                (yourPoints > opponentPoints) ?
+                (myScore > opponentScore) ?
                 'You won !!' :
-                (yourPoints == opponentPoints) ?
+                (myScore == opponentScore) ?
                 'Tied !!' :
                 'You Lost !!'
             );
@@ -178,9 +178,9 @@ class Game {
         $('.sudoku-container').remove();
         $('#messages').html('');
 
-        msgCount = yourPoints = opponentPoints = 0;
+        msgCount = myScore = 0;
         mySide = -1;
-        this.showPoints(yourPoints, opponentPoints);
+        this.showPoints(0, 0);
 
         if (!IS_ONLINE) return;
 
@@ -201,9 +201,9 @@ class Game {
 		IS_ONLINE = false;
 		inGame = false;
     }
-    showPoints(yourPoints, opponentPoints) {
-        $('#yourPoints').html(yourPoints + ' Points');
-        $('#opponentPoints').html(opponentPoints + ' Points');
+    showPoints(a, b) {
+        $('#myScore').html(a + ' Points');
+        $('#opponentScore').html(b + ' Points');
     }
     resetGame() {
         this.resetValidationMatrices();

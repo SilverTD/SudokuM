@@ -29,17 +29,27 @@ pubnub.addListener({
                 channel: event.message.content[0],
                 name: event.message.content[1],
                 level: event.message.content[2],
-                players: event.message.content[3],
+                status: event.message.content[3],
+                players: (event.message.content[5]) ? event.message.content[5] : {}
             };
+            if (event.message.content[4])
+                games[event.message.content[0]].players[event.message.sender] = event.message.content[4];
         }
         else if (event.message.type == 'join') {
             window.clearInterval(spamLobby);
-            games[event.message.content].players = '2/2';
+            games[event.message.content].status = '2/2';
+            games[event.message.content].players[event.message.sender] = {
+                name: event.message.name,
+                score: 0
+            };
+
             spamLobby = window.setInterval(() => {
                 send('lobby', 'create', [
                     games[event.message.content].channel,
                     games[event.message.content].name,
                     games[event.message.content].level,
+                    games[event.message.content].status,
+                    null,
                     games[event.message.content].players,
                 ]);
             }, 3000);
@@ -82,29 +92,39 @@ pubnub.addListener({
                 game.game.cellMatrix[row][col].value = val;
                 game.game.cellMatrix[row][col].classList.toggle('invalid', !isValid);
 
-                if (isValid)
-                    opponentPoints += plusPoints;
+                if (isValid) {
+                    games[channel].players[Object.keys(games[channel].players)
+                    .filter(i => i !== uuid)].score += plusPoints;
+                }
                 else {
-                    opponentPoints -= lostPoints;
+                    games[channel].players[Object.keys(games[channel].players)
+                    .filter(i => i !== uuid)].score -= lostPoints;
                     removeCell(row, col);
                 }
-                game.game.showPoints(yourPoints, opponentPoints);
             }
 
             if (event.message.sender == uuid) {
-                if (isValid)
-                    yourPoints += plusPoints;
+                if (isValid) {
+                    myScore += plusPoints;
+                    games[channel].players[uuid].score += plusPoints;
+                }
                 else {
-                    yourPoints -= lostPoints;
+                    myScore -= lostPoints;
+                    games[channel].players[uuid].score -= lostPoints;
                     removeCell(row, col);
                 }
-                game.game.showPoints(yourPoints, opponentPoints);
             }
 
             if (isValid && event.message.sender != uuid) {
                 if (mySide == 0) game.game.cellMatrix[row][col].classList.add('player1');
                 else game.game.cellMatrix[row][col].classList.add('player2');
             }
+            
+            game.game.showPoints
+            (
+                games[channel].players[uuid].score,
+                games[channel].players[Object.keys(games[channel].players).filter(i => i !== uuid)].score
+            );
             game.game.winLose();
         }
         if (event.message.type == 'chat') {
@@ -168,8 +188,8 @@ function showGames() {
     for (let i in this.games) {
         builder.add(`
             <li>
-                <a id='${games[i].channel}' onclick='${games[i].players == '1/2' ? `joinLobby("${games[i].channel}")` : ''}'>
-                    [${games[i].name}] [${games[i].level}] [${games[i].players}] ${(games[i].players == '2/2') ? 'Playing' : ''}
+                <a id='${games[i].channel}' onclick='${games[i].status == '1/2' ? `joinLobby("${games[i].channel}")` : ''}'>
+                    [${games[i].name}] [${games[i].level}] [${games[i].status}] ${(games[i].status == '2/2') ? 'Playing' : 'Waiting'}
                 </a>
             </li>
         `)
