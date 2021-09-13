@@ -1,3 +1,15 @@
+function generateKey(length = 4, specificKey = null) {
+    let key = ''
+    for (var i = 0; i < length; i++) {
+        let randNum = Math.floor(10 + 26 * Math.random())
+        key += randNum.toString(36).toLocaleUpperCase()
+    }
+    if (specificKey != null) {
+        return specificKey;
+    }
+    return key;
+}
+
 function getUnique(array, count) {
     var tmp = array.slice(array);
     var ret = [];
@@ -74,9 +86,14 @@ function startGame(mode = null) {
 	controls();
 }
 
+function createSinglegame(mode) {
+    $('#createLobby').remove();
+    $('#mask').remove();
+    startGame(mode);
+}
+
 function addMsg(msg) {
-    const builder = new HTMLBuilder();
-    builder.add(`
+    new HTMLBuilder().add(`
         <div id='mask' onclick='$("#msgWindow").remove(); $(this).remove()'></div>
         <div id='msgWindow'>
 			<p>${msg}</p>

@@ -20,8 +20,7 @@ const pubnub = new PubNub({
 pubnub.subscribe({
     channels: [channel],
     withPresence: true
-})
-
+});
 pubnub.addListener({
     message: function(event) {
         if (event.message.type == 'create') {
@@ -93,12 +92,10 @@ pubnub.addListener({
                 game.game.cellMatrix[row][col].classList.toggle('invalid', !isValid);
 
                 if (isValid) {
-                    games[channel].players[Object.keys(games[channel].players)
-                    .filter(i => i !== uuid)].score += plusPoints;
+                    games[channel].players[event.message.sender].score += plusPoints;
                 }
                 else {
-                    games[channel].players[Object.keys(games[channel].players)
-                    .filter(i => i !== uuid)].score -= lostPoints;
+                    games[channel].players[event.message.sender].score -= lostPoints;
                     removeCell(row, col);
                 }
             }
@@ -119,7 +116,7 @@ pubnub.addListener({
                 if (mySide == 0) game.game.cellMatrix[row][col].classList.add('player1');
                 else game.game.cellMatrix[row][col].classList.add('player2');
             }
-            
+
             game.game.showPoints
             (
                 games[channel].players[uuid].score,
@@ -149,25 +146,27 @@ pubnub.addListener({
     }
 });
 
-function send(channel, type, content) {
-    if (IS_ONLINE) {
-        pubnub.publish({
-            channel: channel,
-            message: {
-                sender: uuid,
-                type: type,
-                name: myName,
-                content: content,
-                timesent: new Date().getTime() / 1000
-            }
-        }, function(status, response) {
-            //Handle error here
-            if (status.error) {
-                console.log('oops, we got an error')
-            }
-        });
-    }
+async function send(channel, type, content) {
+    if (IS_ONLINE) return;
+    
+    const response = await pubnub.publish({
+        channel: channel,
+        message: {
+            sender: uuid,
+            type: type,
+            name: myName,
+            content: content,
+            timesent: new Date().getTime() / 1000
+        }
+    });
 };
+
+function pubnubSubscribe(id) {
+    pubnub.subscribe({
+        channels: [id],
+        withPresence: true
+    });
+}
 
 var checkGames = window.setInterval( () => {
     for (var property in games) {
@@ -188,7 +187,7 @@ function showGames() {
     for (let i in this.games) {
         builder.add(`
             <li>
-                <a id='${games[i].channel}' onclick='${games[i].status == '1/2' ? `joinLobby("${games[i].channel}")` : ''}'>
+                <a id='${games[i].channel}' onclick='${games[i].status == '1/2' ? `joinChannel("${games[i].channel}")` : ''}'>
                     [${games[i].name}] [${games[i].level}] [${games[i].status}] ${(games[i].status == '2/2') ? 'Playing' : 'Waiting'}
                 </a>
             </li>

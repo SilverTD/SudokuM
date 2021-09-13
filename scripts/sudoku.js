@@ -62,12 +62,7 @@ class Sudoku {
             x = 0,
             values,
             rows = matrix,
-            inputs = this.game.table.getElementsByTagName('input'),
-            difficulties = {
-                'easy': 40,
-                'normal': 30,
-                'hard': 20,
-            };
+            inputs = this.game.table.getElementsByTagName('input');
 
         // Solve the game to get the solution
         this.game.solveGame(0, 0);

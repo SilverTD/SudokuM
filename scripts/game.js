@@ -187,10 +187,7 @@ class Game {
 		let oldChannel = channel;
 		channel = 'lobby';
 
-		pubnub.subscribe({
-			channels: [channel],
-			withPresence: true
-		});
+        pubnubSubscribe(channel);
 
 		send(channel, 'delete-lobby', oldChannel);
 
@@ -257,7 +254,7 @@ class Game {
             isValid = false;
             if (!IS_ONLINE) {
                 life--;
-                if (life < 0) {
+                if (life <= 0) {
                     addMsg('YOU LOST, You were wrong 3 times');
                     $('#menu').css('display', 'block');
                     $('#singleMatch').css('display', 'none');
