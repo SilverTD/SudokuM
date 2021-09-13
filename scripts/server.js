@@ -147,8 +147,8 @@ pubnub.addListener({
 });
 
 async function send(channel, type, content) {
-    if (IS_ONLINE) return;
-    
+    if (!IS_ONLINE) return;
+
     const response = await pubnub.publish({
         channel: channel,
         message: {
