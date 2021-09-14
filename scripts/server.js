@@ -93,6 +93,8 @@ pubnub.addListener({
 
                 if (isValid) {
                     games[channel].players[event.message.sender].score += plusPoints;
+                    if (mySide == 0) game.game.cellMatrix[row][col].classList.add('player1');
+                    else game.game.cellMatrix[row][col].classList.add('player2');
                 }
                 else {
                     games[channel].players[event.message.sender].score -= lostPoints;
@@ -110,11 +112,6 @@ pubnub.addListener({
                     games[channel].players[uuid].score -= lostPoints;
                     removeCell(row, col);
                 }
-            }
-
-            if (isValid && event.message.sender != uuid) {
-                if (mySide == 0) game.game.cellMatrix[row][col].classList.add('player1');
-                else game.game.cellMatrix[row][col].classList.add('player2');
             }
 
             game.game.showPoints
@@ -169,9 +166,9 @@ function pubnubSubscribe(id) {
 }
 
 var checkGames = window.setInterval( () => {
-    for (var property in games) {
+    for (let property in games) {
         if (games.hasOwnProperty(property)) {
-            var seconds = new Date().getTime() / 1000 - games[property].time
+            let seconds = new Date().getTime() / 1000 - games[property].time
             if (seconds > 15) {
                 delete games[property];
                 showGames();

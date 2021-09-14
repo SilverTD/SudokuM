@@ -16,7 +16,7 @@ class Sudoku {
     start() {
         this.matrix = this.game.matrix.row;
 
-        var arr = [],
+        let arr = [],
             x = 0,
             values,
             rows = this.game.matrix.row,
@@ -50,7 +50,7 @@ class Sudoku {
         this.reset();
 
         util.each(values, function(i, data) {
-            var input = inputs[data.index];
+            let input = inputs[data.index];
             input.value = data.value;
             input.classList.add('disabled');
             input.tabIndex = -1;
@@ -58,7 +58,7 @@ class Sudoku {
         });
     }
     joinGame(matrix, valuesMatrix) {
-        var arr = [],
+        let arr = [],
             x = 0,
             values,
             rows = matrix,
@@ -84,7 +84,7 @@ class Sudoku {
         this.reset();
 
         util.each(values, function(i, data) {
-            var input = inputs[data.index];
+            let input = inputs[data.index];
             input.value = data.value;
             input.classList.add('disabled');
             input.tabIndex = -1;

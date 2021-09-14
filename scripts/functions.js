@@ -1,6 +1,6 @@
 function generateKey(length = 4, specificKey = null) {
     let key = ''
-    for (var i = 0; i < length; i++) {
+    for (let i = 0; i < length; i++) {
         let randNum = Math.floor(10 + 26 * Math.random())
         key += randNum.toString(36).toLocaleUpperCase()
     }
@@ -11,12 +11,12 @@ function generateKey(length = 4, specificKey = null) {
 }
 
 function getUnique(array, count) {
-    var tmp = array.slice(array);
-    var ret = [];
+    let tmp = array.slice(array);
+    let ret = [];
 
-    for (var i = 0; i < count; i++) {
-        var index = Math.floor(Math.random() * tmp.length);
-        var removed = tmp.splice(index, 1);
+    for (let i = 0; i < count; i++) {
+        let index = Math.floor(Math.random() * tmp.length);
+        let removed = tmp.splice(index, 1);
 
         ret.push(removed[0]);
     }
@@ -25,11 +25,11 @@ function getUnique(array, count) {
 
 function triggerEvent(el, type) {
     if ('createEvent' in document) {
-        var e = document.createEvent('HTMLEvents');
+        let e = document.createEvent('HTMLEvents');
         e.initEvent(type, false, true);
         el.dispatchEvent(e);
     } else {
-        var e = document.createEventObject();
+        let e = document.createEventObject();
         e.eventType = type;
         el.fireEvent('on' + e.eventType, e);
     }

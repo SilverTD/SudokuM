@@ -6,8 +6,7 @@ var myScore = 0;
 var util = {
     extend: function(src, props) {
         props = props || {};
-        var p;
-        for (p in src) {
+        for (let p in src) {
             if (!props.hasOwnProperty(p)) {
                 props[p] = src[p];
             }
@@ -16,13 +15,13 @@ var util = {
     },
     each: function(a, b, c) {
         if ('[object Object]' === Object.prototype.toString.call(a)) {
-            for (var d in a) {
+            for (let d in a) {
                 if (Object.prototype.hasOwnProperty.call(a, d)) {
                     b.call(c, d, a[d], a);
                 }
             }
         } else {
-            for (var e = 0, f = a.length; e < f; e++) {
+            for (let e = 0, f = a.length; e < f; e++) {
                 b.call(c, e, a[e], a);
             }
         }
@@ -60,15 +59,15 @@ class Game {
         return this;
     }
     buildGUI() {
-        var td, tr;
+        let td, tr;
         this.table = document.createElement('table');
         this.table.classList.add('sudoku-container');
 
-        for (var i = 0; i < 9; i++) {
+        for (let i = 0; i < 9; i++) {
             tr = document.createElement('tr');
             this.cellMatrix[i] = {};
 
-            for (var j = 0; j < 9; j++) {
+            for (let j = 0; j < 9; j++) {
                 this.cellMatrix[i][j] = document.createElement('input');
                 this.cellMatrix[i][j].maxLength = 1;
 
@@ -81,8 +80,8 @@ class Game {
 
                 td.appendChild(this.cellMatrix[i][j]);
 
-                var sectIDi = Math.floor(i / 3);
-                var sectIDj = Math.floor(j / 3);
+                let sectIDi = Math.floor(i / 3);
+                let sectIDj = Math.floor(j / 3);
                 if ((sectIDi + sectIDj) % 2 === 0) {
                     td.classList.add('sudoku-section-one');
                 } else {
@@ -99,7 +98,7 @@ class Game {
         return this.table;
     }
     onKeyUp(e) {
-        var sectRow,
+        let sectRow,
             sectCol,
             secIndex,
             val, row, col,
@@ -137,7 +136,7 @@ class Game {
         this.matrix.sect[sectRow][sectCol][secIndex] = val;
     }
     onMouseDown(e) {
-        var t = e.target;
+        let t = e.target;
         if (
             t.nodeName === 'INPUT' &&
             t.classList.contains('disabled') ||
@@ -204,12 +203,12 @@ class Game {
     }
     resetGame() {
         this.resetValidationMatrices();
-        for (var row = 0; row < 9; row++) {
-            for (var col = 0; col < 9; col++) {
+        for (let row = 0; row < 9; row++) {
+            for (let col = 0; col < 9; col++) {
                 this.cellMatrix[row][col].value = '';
             }
         }
-        var inputs = this.table.getElementsByTagName('input');
+        let inputs = this.table.getElementsByTagName('input');
 
         util.each(inputs, function(i, input) {
             input.classList.remove('disabled');
@@ -230,7 +229,7 @@ class Game {
         };
 
         // Build the row/col matrix and validation arrays
-        for (var i = 0; i < 9; i++) {
+        for (let i = 0; i < 9; i++) {
             this.matrix.row[i] = ['', '', '', '', '', '', '', '', ''];
             this.matrix.col[i] = ['', '', '', '', '', '', '', '', ''];
             this.validation.row[i] = [];
@@ -238,17 +237,17 @@ class Game {
         }
 
         // Build the section matrix and validation arrays
-        for (var row = 0; row < 3; row++) {
+        for (let row = 0; row < 3; row++) {
             this.matrix.sect[row] = [];
             this.validation.sect[row] = {};
-            for (var col = 0; col < 3; col++) {
+            for (let col = 0; col < 3; col++) {
                 this.matrix.sect[row][col] = ['', '', '', '', '', '', '', '', ''];
                 this.validation.sect[row][col] = [];
             }
         }
     }
     validateNumber(num, rowID, colID) {
-        var isValid = true;
+        let isValid = true;
 
         if (num != this.valuesMatrix[rowID][colID]) {
             isValid = false;
@@ -266,10 +265,10 @@ class Game {
         return isValid;
     }
     validateMatrix() {
-        var isValid, val, $element, hasError = false;
+        let isValid, val, $element, hasError = false;
 
-        for (var row = 0; row < 9; row++) {
-            for (var col = 0; col < 9; col++) {
+        for (let row = 0; row < 9; row++) {
+            for (let col = 0; col < 9; col++) {
                 val = this.matrix.row[row][col];
                 isValid = this.validateNumber(val, row, col);
                 this.cellMatrix[row][col].classList.toggle('invalid', !isValid);
@@ -280,7 +279,7 @@ class Game {
         return !hasError;
     }
     solveGame(row, col, string) {
-        var cval,
+        let cval,
             sqRow,
             sqCol,
             nextSquare,
@@ -302,7 +301,7 @@ class Game {
             sectCol = Math.floor(sqCol / 3);
             secIndex = sqRow % 3 * 3 + sqCol % 3;
 
-            for (var i = 0; i < legalValues.length; i++) {
+            for (let i = 0; i < legalValues.length; i++) {
                 cval = legalValues[i];
                 nextSquare.value = string ? '' : cval;
 
@@ -323,8 +322,8 @@ class Game {
         }
     }
     findClosestEmptySquare(row, col) {
-        var walkingRow, walkingCol, found = false;
-        for (var i = col + 9 * row; i < 81; i++) {
+        let walkingRow, walkingCol, found = false;
+        for (let i = col + 9 * row; i < 81; i++) {
             walkingRow = Math.floor(i / 9);
             walkingCol = i % 9;
             if (this.matrix.row[walkingRow][walkingCol] === '') {
@@ -334,7 +333,7 @@ class Game {
         }
     }
     findLegalValuesForSquare(row, col) {
-        var temp,
+        let temp,
             legalVals,
             legalNums,
             val,
@@ -374,7 +373,7 @@ class Game {
         }
 
         for (i = legalNums.length - 1; i > 0; i--) {
-            var rand = getRandomInt(0, i);
+            let rand = getRandomInt(0, i);
             temp = legalNums[i];
             legalNums[i] = legalNums[rand];
             legalNums[rand] = temp;
