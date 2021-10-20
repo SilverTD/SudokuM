@@ -9,19 +9,19 @@
 The game has 2 modes:
 
 <details>
-<summary>Singleplayer:</summary>
+<summary>Singleplayer</summary>
 
-1. In main menu press the `single player` button.
+1. In main menu press the `Play single` button.
 2. Choose the level you want to play (```easy, medium, hard, impossible```)
-3. Press create button.
+3. Press `create` button.
 4. Enjoy the game !
   
 </details>
 
 <details>
-<summary>Multiplayer:</summary>
+<summary>Multiplayer</summary>
   
-1. In main menu press the `create` button.
+1. In main menu press the `Create` button.
 2. Choose the level (```easy, medium, hard, impossible```)
 3. Add room name.
 4. Press the input (room name) and press enter to create a new room.
