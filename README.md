@@ -1,11 +1,11 @@
 # SudokuMultiplayer v1.3
-## About the game
+## About
 - Sudoku is a great thinking puzzle game, but it's even better when it's an online game like that you can play with friends while away from each other.
 - The game uses ``HTML`` / ``CSS`` / ``JS`` and uses ``PUBNUB`` for the server.
 - I originally made this game mainly to play with my sister (when my sister was away).
 - But later on i develop it further to play with my foreign friends.
 
-## How to play the game
+## Tutorial
 The game has 2 modes:
 
 <details>
