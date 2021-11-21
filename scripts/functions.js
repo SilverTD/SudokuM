@@ -1,13 +1,11 @@
 function generateKey(length = 4, specificKey = null) {
-    let key = ''
+    let key = '';
     for (let i = 0; i < length; i++) {
-        let randNum = Math.floor(10 + 26 * Math.random())
-        key += randNum.toString(36).toLocaleUpperCase()
+        let randNum = Math.floor(10 + 26 * Math.random());
+        key += randNum.toString(36).toLocaleUpperCase();
     }
-    if (specificKey != null) {
-        return specificKey;
-    }
-    return key;
+
+    return specificKey || key;
 }
 
 function getUnique(array, count) {
@@ -41,9 +39,7 @@ function controls() {
     container.addEventListener('click', e => {
         const el = e.target.closest('input');
         if (el) {
-            inputs.forEach(input => {
-                input.classList.toggle('highlight', input.value && input.value === el.value);
-            });
+            inputs.forEach(input => input.classList.toggle('highlight', input.value && input.value === el.value));
         }
     }, false);
 }

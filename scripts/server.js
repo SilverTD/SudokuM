@@ -3,7 +3,6 @@ const lostPoints = 3;
 const plusPoints = 1;
 
 var IS_ONLINE = false;
-
 var mySide = -1;
 var channel = 'lobby';
 var myName = null;
@@ -29,13 +28,15 @@ pubnub.addListener({
                 name: event.message.content[1],
                 level: event.message.content[2],
                 status: event.message.content[3],
-                players: (event.message.content[5]) ? event.message.content[5] : {}
+                players: event.message.content[5] || {}
             };
+
             if (event.message.content[4])
                 games[event.message.content[0]].players[event.message.sender] = event.message.content[4];
         }
         else if (event.message.type == 'join') {
             window.clearInterval(spamLobby);
+
             games[event.message.content].status = '2/2';
             games[event.message.content].players[event.message.sender] = {
                 name: event.message.name,
@@ -52,6 +53,7 @@ pubnub.addListener({
                     games[event.message.content].players,
                 ]);
             }, 3000);
+
             showGames();
         }
         else if (event.message.type == 'delete-lobby') {
@@ -65,10 +67,9 @@ pubnub.addListener({
             send(event.channel, 'startingInfo', mySide);
         }
         else if (event.message.type == 'startingInfo') {
-            if (uuid != event.message.sender) {
+            if (event.message.sender != uuid) {
                 myOpponent = event.message.name;
-                if (event.message.content == 0) mySide = 1;
-                else mySide = 0;
+                mySide = (event.message.content == 0) ? 1 : 0;
                 startGame2(mySide, event.channel);
             }
         }
@@ -164,19 +165,6 @@ function pubnubSubscribe(id) {
         withPresence: true
     });
 }
-
-var checkGames = window.setInterval( () => {
-    for (let property in games) {
-        if (games.hasOwnProperty(property)) {
-            let seconds = new Date().getTime() / 1000 - games[property].time
-            if (seconds > 15) {
-                delete games[property];
-                showGames();
-                break;
-            }
-        }
-    }
-}, 3000);
 
 function showGames() {
     const builder = new HTMLBuilder();
