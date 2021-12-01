@@ -5,11 +5,11 @@ class ChatGame {
     }
     handleChat(name ,msg) {
         this.chatMsg.push({
-            'name': name,
-            'msg': msg
+            'name': escapeHtml(name),
+            'msg': escapeHtml(msg)
         });
 
-        if (this.chatMsg.length > 5)
+        if (this.chatMsg.length > this.max)
             this.chatMsg.shift();
 
         this.addToDiv();
