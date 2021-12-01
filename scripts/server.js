@@ -28,7 +28,7 @@ pubnub.addListener({
                 name: event.message.content[1],
                 level: event.message.content[2],
                 status: event.message.content[3],
-                players: event.message.content[5] || {}
+                players: (event.message.content[5]) ? event.message.content[5] : {}
             };
 
             if (event.message.content[4])
