@@ -8,6 +8,14 @@ function generateKey(length = 4, specificKey = null) {
     return specificKey || key;
 }
 
+function escapeHtml(text) {
+	return text.replace(/&/g, "&amp;")
+		   .replace(/</g, "&lt;")
+		   .replace(/>/g, "&gt;")
+		   .replace(/"/g, "&quot;")
+		   .replace(/'/g, "&#039;");
+};
+
 function getUnique(array, count) {
     let tmp = array.slice(array);
     let ret = [];
@@ -92,7 +100,7 @@ function addMsg(msg) {
     new HTMLBuilder().add(`
         <div id='mask' onclick='$("#msgWindow").remove(); $(this).remove()'></div>
         <div id='msgWindow'>
-			<p>${msg}</p>
+		<p>${msg}</p>
         </div>
     `).appendInto('body');
 }
